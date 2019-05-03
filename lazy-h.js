@@ -10,6 +10,9 @@ export const h = function lazyHyperScript(tag, attrs = {}, ...children) {
   children.forEach(child => elem.appendChild(typeof child === 'string' ? h.text(child) : child));
   return elem;
 };
+
+// tack on a few other shorthand utils
+
 h.qs = (selectors, parentNode = document) => parentNode.querySelector(selectors);
 h.qsAll = (selectors, parentNode = document) => parentNode.querySelectorAll(selectors);
 h.getById = (id, parentNode = document) => parentNode.getElementById(id);
