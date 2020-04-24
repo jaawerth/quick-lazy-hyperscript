@@ -1,6 +1,4 @@
-'use strict';
-
-export const el = function lazyHyperScript(tag, attrs = {}, ...children) {
+export default function el(tag, attrs = {}, ...children) {
   const elem = typeof tag === 'string' ? document.createElement(tag) : tag;
   if (Object.prototype.toString.call(attrs) === '[object Object]') {
     Object.keys(attrs).forEach(key => elem.setAttribute(key, attrs[key]));
@@ -23,5 +21,3 @@ el.once = (tgt, event, handler, ...args) => tgt.addEventListener(event, function
   tgt.removeEventListener(event, wrappedHandler);
   return handler.call(this, e);
 }, ...args);
-
-export default h;
