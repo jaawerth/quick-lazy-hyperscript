@@ -9,8 +9,11 @@ export default function el(tag, attrs = {}, ...children) {
   return elem;
 };
 
-// tack on a few other shorthand utils
+// helper for generating tag creation funcs
+const tags = Object.create(null);
+el.tag = (tagname) => tags[tagname] || (tags[tagname] = (...args) => el(tagname, ...args), tags[tagname]);
 
+// tack on a few other shorthand utils
 el.qs = (selectors, parentNode = document) => parentNode.querySelector(selectors);
 el.qsAll = (selectors, parentNode = document) => parentNode.querySelectorAll(selectors);
 el.getById = (id, parentNode = document) => parentNode.getElementById(id);
