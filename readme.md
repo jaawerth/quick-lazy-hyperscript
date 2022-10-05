@@ -1,3 +1,12 @@
+# lazy-el.js
+
+Just a very quick and dirty hyperscript implementation, for when all you have is the overly verbose DOM API.
+
+Also includes a few other shorthand functions for working with the DOM. Oh, you want documentation? ...Maybe later :)
+
+## Sample usage
+
+```javascript
 import el from './lazy-el.js';
 
 el.on(document, 'DOMContentLoaded', () => {
@@ -11,11 +20,11 @@ el.on(document, 'DOMContentLoaded', () => {
   const items = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'];
 
   // the verbose way
-  el(container,
+  el(container, [
     el('h2', 'List 1'),
     el('p', 'A list'),
-    el('ol', ...items.slice(0, 3).map(txt => el('li', txt))),
-  );
+    el('ol', items.slice(0, 3).map(txt => el('li', txt))),
+  ]);
 
   // or you can optionally make things more concise by generating tag funcs
   const [h2, p, ol, li] = el.tags('h2', 'p', 'ol', 'li');
@@ -26,8 +35,9 @@ el.on(document, 'DOMContentLoaded', () => {
   el(container,
     h2('List 2'),
     p('Another list'),
-    ol(...items.map(txt => li(txt))),
+    ol(items.map(txt => li(txt))),
   );
   // now insert the container into the DOM
   el(document.body, container);
 });
+```
