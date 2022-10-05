@@ -12,6 +12,8 @@ export default function el(tag, attrs = {}, ...children) {
 // helper for generating tag creation funcs
 const tags = Object.create(null);
 el.tag = (tagname) => tags[tagname] || (tags[tagname] = (...args) => el(tagname, ...args), tags[tagname]);
+el.tags = (...tagnames) => tagnames.map(el.tag)
+el.ptag = (typeof Proxy === 'undefined') ? {} : new Proxy({}, {get: (t, k) => el.tag(k)});
 
 // tack on a few other shorthand utils
 el.qs = (selectors, parentNode = document) => parentNode.querySelector(selectors);

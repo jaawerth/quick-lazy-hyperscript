@@ -10,20 +10,24 @@ el.on(document, 'DOMContentLoaded', () => {
   const container = el('div', {id: 'container'});
   const items = ['First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth'];
 
+  // the verbose way
   el(container,
     el('h2', 'List 1'),
     el('p', 'A list'),
     el('ol', ...items.slice(0, 3).map(txt => el('li', txt))),
   );
 
-  // you can optionally make things (arguably) cleaner by generating tag funcs
-  const [h2, p, ol, li] = ['h2', 'p', 'ol', 'li'].map(el.tag);
+  // or you can optionally make things more concise by generating tag funcs
+  const [h2, p, ol, li] = el.tags('h2', 'p', 'ol', 'li');
+
+  // alternatively, even shorter (in ES2015+ sicne Proxy can't be shimmed):
+  // const {h2, p, ol, li} = el.ptag;
+
   el(container,
     h2('List 2'),
     p('Another list'),
-    ol(...items.slice(3).map(txt => li(txt))),
+    ol(...items.map(txt => li(txt))),
   );
-
-  // now insert container
+  // now insert the container into the DOM
   el(document.body, container);
 });
