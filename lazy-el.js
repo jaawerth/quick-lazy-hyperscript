@@ -1,18 +1,19 @@
-export default function el(tag, attrs = {}, ...children) {
+export default function el(tag, attrs = {}, ch = [], ...chx) {
   const elem = typeof tag === 'string' ? document.createElement(tag) : tag;
   if (Object.prototype.toString.call(attrs) === '[object Object]') {
     Object.keys(attrs).forEach(key => elem.setAttribute(key, attrs[key]));
+    ch = [ch, chx].flat(3); // force children into flat array
   } else {
-    children.unshift(attrs);
+    ch = [attrs, ch, chx].flat(3);
   }
-  children.forEach(child => elem.appendChild(typeof child === 'string' ? el.text(child) : child));
+  ch.forEach(child => elem.appendChild(typeof child === 'string' ? el.text(child) : child));
   return elem;
 };
 
 // helper for generating tag creation funcs
 const tags = Object.create(null);
 el.tag = (tagname) => tags[tagname] || (tags[tagname] = (...args) => el(tagname, ...args), tags[tagname]);
-el.tags = (...tagnames) => tagnames.map(el.tag)
+el.tags = (...tagnames) => tagnames.map(el.tag);
 el.ptag = (typeof Proxy === 'undefined') ? {} : new Proxy({}, {get: (t, k) => el.tag(k)});
 
 // tack on a few other shorthand utils
